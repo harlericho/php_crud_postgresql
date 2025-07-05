@@ -67,6 +67,36 @@ class PersonaController
       ], 500);
     }
   }
+  public function showByName($name)
+  {
+    try {
+      $persona = $this->personaService->getPersonaByName($name);
+
+      if ($persona) {
+        $this->sendJsonResponse([
+          'success' => true,
+          'data' => $persona,
+          'message' => 'Persona encontrada'
+        ]);
+      } else {
+        $this->sendJsonResponse([
+          'success' => false,
+          'message' => $this->messages['persona_not_found']
+        ], 404);
+      }
+    } catch (InvalidArgumentException $e) {
+      $this->sendJsonResponse([
+        'success' => false,
+        'message' => $e->getMessage()
+      ], 400);
+    } catch (PDOException $e) {
+      $this->sendJsonResponse([
+        'success' => false,
+        'message' => 'Error al obtener persona',
+        'error' => $e->getMessage()
+      ], 500);
+    }
+  }
 
   public function store()
   {

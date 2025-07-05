@@ -50,6 +50,26 @@ class PersonaRepository implements PersonaRepositoryInterface
       throw new PDOException("Error al obtener persona: " . $e->getMessage());
     }
   }
+  public function findName($name)
+  {
+    try {
+      $sql = "SELECT * FROM personas WHERE nombre ILIKE :nombre ORDER BY id ASC";
+      $stmt = $this->connection->prepare($sql);
+      $stmt->bindValue(':nombre', '%' . $name . '%', PDO::PARAM_STR);
+      $stmt->execute();
+
+      $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      $personas = [];
+      foreach ($rows as $row) {
+        $personas[] = Persona::fromArray($row);  // Esto crea múltiples objetos Persona
+      }
+
+      return $personas;
+    } catch (PDOException $e) {
+      throw new PDOException("Error al buscar persona por nombre: " . $e->getMessage());
+    }
+  }
 
   public function create(Persona $persona)
   {

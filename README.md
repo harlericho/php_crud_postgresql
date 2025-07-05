@@ -101,6 +101,7 @@ docker-compose exec postgres psql -U postgres -d persona_db  # Conectar a BD
 
 - `GET /api/personas` - Listar todas las personas
 - `GET /api/personas/{id}` - Obtener una persona por ID
+- `GET /api/personas/{nombre}` - Obtener una persona por nombre que coincidan
 - `POST /api/personas` - Crear nueva persona
 - `PUT /api/personas/{id}` - Actualizar persona
 - `DELETE /api/personas/{id}` - Eliminar persona

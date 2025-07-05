@@ -70,6 +70,9 @@ class Router
     } elseif (count($segments) === 3 && is_numeric($segments[2])) {
       // GET /api/personas/{id}
       $this->personaController->show((int) $segments[2]);
+    } elseif (count($segments) === 3 && !is_numeric($segments[2])) {
+      // GET /api/personas/{nombre}
+      $this->personaController->showByName($segments[2]);
     } else {
       $this->sendNotFound();
     }

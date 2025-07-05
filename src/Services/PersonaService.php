@@ -33,6 +33,18 @@ class PersonaService implements PersonaServiceInterface
 
     return $persona ? $persona->toArray() : null;
   }
+  public function getPersonaByName($name)
+  {
+    if (empty(trim($name))) {
+      throw new InvalidArgumentException("El nombre no puede estar vacío");
+    }
+
+    $persona = $this->personaRepository->findName($name);
+
+    return array_map(function (Persona $persona) {
+      return $persona->toArray();
+    }, $persona);
+  }
 
   public function createPersona($data)
   {

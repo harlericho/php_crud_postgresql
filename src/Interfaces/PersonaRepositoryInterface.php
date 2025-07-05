@@ -8,6 +8,7 @@ interface PersonaRepositoryInterface
 {
   public function findAll();
   public function findById($id);
+  public function findName($name);
   public function create(Persona $persona);
   public function update($id, Persona $persona);
   public function delete($id);
