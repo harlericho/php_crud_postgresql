@@ -3,15 +3,19 @@
 namespace App\Config;
 
 use App\Controllers\PersonaController;
+use App\Controllers\CategoriaController;
 use App\Interfaces\PersonaServiceInterface;
+use App\Interfaces\CategoriaServiceInterface;
 
 class Router
 {
   private $personaController;
+  private $categoriaController;
 
-  public function __construct(PersonaServiceInterface $personaService)
+  public function __construct(PersonaServiceInterface $personaService, CategoriaServiceInterface $categoriaService)
   {
     $this->personaController = new PersonaController($personaService);
+    $this->categoriaController = new CategoriaController($categoriaService);
   }
 
   public function route()
@@ -29,12 +33,25 @@ class Router
     $segments = explode('/', $uri);
 
     // Verificar que sea una ruta de API
-    if (count($segments) < 2 || $segments[0] !== 'api' || $segments[1] !== 'personas') {
+    if (count($segments) < 2 || $segments[0] !== 'api') {
       $this->sendNotFound();
       return;
     }
 
-    $this->handlePersonasRoute($method, $segments);
+    // Determinar qué controlador usar basado en el recurso
+    $resource = $segments[1];
+
+    switch ($resource) {
+      case 'personas':
+        $this->handlePersonasRoute($method, $segments);
+        break;
+      case 'categorias':
+        $this->handleCategoriasRoute($method, $segments);
+        break;
+      default:
+        $this->sendNotFound();
+        break;
+    }
   }
 
   private function handlePersonasRoute($method, $segments)
@@ -103,6 +120,77 @@ class Router
     if (count($segments) === 3 && is_numeric($segments[2])) {
       // DELETE /api/personas/{id}
       $this->personaController->destroy((int) $segments[2]);
+    } else {
+      $this->sendNotFound();
+    }
+  }
+
+  private function handleCategoriasRoute($method, $segments)
+  {
+    switch ($method) {
+      case 'GET':
+        $this->handleCategoriasGetRequest($segments);
+        break;
+
+      case 'POST':
+        $this->handleCategoriasPostRequest($segments);
+        break;
+
+      case 'PUT':
+        $this->handleCategoriasPutRequest($segments);
+        break;
+
+      case 'DELETE':
+        $this->handleCategoriasDeleteRequest($segments);
+        break;
+
+      default:
+        $this->sendMethodNotAllowed();
+        break;
+    }
+  }
+
+  private function handleCategoriasGetRequest($segments)
+  {
+    if (count($segments) === 2) {
+      // GET /api/categorias
+      $this->categoriaController->index();
+    } elseif (count($segments) === 3 && is_numeric($segments[2])) {
+      // GET /api/categorias/{id}
+      $this->categoriaController->show((int) $segments[2]);
+    } elseif (count($segments) === 3 && $segments[2] === 'activas') {
+      // GET /api/categorias/activas
+      $this->categoriaController->showActivas();
+    } else {
+      $this->sendNotFound();
+    }
+  }
+
+  private function handleCategoriasPostRequest($segments)
+  {
+    if (count($segments) === 2) {
+      // POST /api/categorias
+      $this->categoriaController->store();
+    } else {
+      $this->sendNotFound();
+    }
+  }
+
+  private function handleCategoriasPutRequest($segments)
+  {
+    if (count($segments) === 3 && is_numeric($segments[2])) {
+      // PUT /api/categorias/{id}
+      $this->categoriaController->update((int) $segments[2]);
+    } else {
+      $this->sendNotFound();
+    }
+  }
+
+  private function handleCategoriasDeleteRequest($segments)
+  {
+    if (count($segments) === 3 && is_numeric($segments[2])) {
+      // DELETE /api/categorias/{id}
+      $this->categoriaController->destroy((int) $segments[2]);
     } else {
       $this->sendNotFound();
     }

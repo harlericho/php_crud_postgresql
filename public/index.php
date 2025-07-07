@@ -16,6 +16,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Config\Container;
 use App\Config\Router;
 use App\Interfaces\PersonaServiceInterface;
+use App\Interfaces\CategoriaServiceInterface;
 use Dotenv\Dotenv;
 
 try {
@@ -29,8 +30,11 @@ try {
   // Obtener el servicio de personas
   $personaService = $container->get(PersonaServiceInterface::class);
 
+  // Obtener el servicio de categorias
+  $categoriaService = $container->get(CategoriaServiceInterface::class);
+
   // Crear y ejecutar el router
-  $router = new Router($personaService);
+  $router = new Router($personaService, $categoriaService);
   $router->route();
 } catch (Exception $e) {
   http_response_code(500);

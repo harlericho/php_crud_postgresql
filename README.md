@@ -106,6 +106,13 @@ docker-compose exec postgres psql -U postgres -d persona_db  # Conectar a BD
 - `PUT /api/personas/{id}` - Actualizar persona
 - `DELETE /api/personas/{id}` - Eliminar persona
 
+- `GET /api/categorias` - Listar todas las categorias
+- `GET /api/categorias/{id}` - Obtener una categoria por ID
+- `GET /api/categorias/activas` - Solo categorías activas
+- `POST /api/categorias` - Crear nueva categorias
+- `PUT /api/categorias/{id}` - Actualizar categorias
+- `DELETE /api/categorias/{id}` - Eliminar categorias
+
 ## Estructura de Persona
 
 ```json
@@ -115,5 +122,16 @@ docker-compose exec postgres psql -U postgres -d persona_db  # Conectar a BD
   "apellido": "Pérez",
   "email": "juan@email.com",
   "edad": 30
+}
+```
+
+## Estructura de Categoria
+
+```json
+{
+  "id": 1,
+  "nombre": "Hogar",
+  "descripcion": "Cosas de hogar",
+  "activo": true
 }
 ```

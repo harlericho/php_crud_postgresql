@@ -14,12 +14,24 @@ echo json_encode([
     'GET /api/personas/{id}' => 'Obtener una persona por ID',
     'POST /api/personas' => 'Crear nueva persona',
     'PUT /api/personas/{id}' => 'Actualizar persona',
-    'DELETE /api/personas/{id}' => 'Eliminar persona'
+    'DELETE /api/personas/{id}' => 'Eliminar persona',
+
+    'GET /api/categorias' => 'Listar todas las categorías',
+    'GET /api/categorias/activas' => 'Listar solo categorías activas',
+    'GET /api/categorias/{id}' => 'Obtener una categoría por ID',
+    'POST /api/categorias' => 'Crear nueva categoría',
+    'PUT /api/categorias/{id}' => 'Actualizar categoría',
+    'DELETE /api/categorias/{id}' => 'Eliminar categoría'
   ],
   'ejemplo_persona' => [
     'nombre' => 'Juan',
     'apellido' => 'Pérez',
     'email' => 'juan.perez@email.com',
     'edad' => 30
+  ],
+  'ejemplo_categoria' => [
+    'nombre' => 'Electrónica',
+    'descripcion' => 'Categoría de productos electrónicos',
+    'activo' => true
   ]
 ], JSON_PRETTY_PRINT);

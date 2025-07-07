@@ -14,8 +14,8 @@ services:
     volumes:
       # Volumen persistente para los datos
       - postgres_data:/var/lib/postgresql/data
-      # Montar el archivo de migración para inicialización
-      - ./migrations/001_create_personas_table.sql:/docker-entrypoint-initdb.d/001_create_personas_table.sql
+      # Montar toda la carpeta de migraciones para inicialización automática
+      - ./migrations:/docker-entrypoint-initdb.d
     networks:
       - php_crud_network
     healthcheck:
